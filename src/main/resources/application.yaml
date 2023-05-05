@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: spring-boot-cloud-config-demo
+  cloud:
+    kubernetes:
+      config:
+        name: spring-boot-cloud-config-demo
+        namespace: default
+      reload:
+        enabled: true
+management:
+  endpoint:
+    restart:
+      enabled: true
+oci:
+  instance:
+    tenancy-id: ${OCI_INSTANCE_TENANCY-ID}
+    region-id: ${OCI_INSTANCE_REGION-ID}
+  authentication:
+    user-id: ${OCI_AUTHENTICATION_USER-ID}
+    fingerprint: ${OCI_AUTHENTICATION_FINGERPRINT}
+    private-key: ${OCI_AUTHENTICATION_PRIVATE-KEY}
+    passphrase: ${OCI_AUTHENTICATION_PASSPHRASE}
+    profile: ${OCI_AUTHENTICATION_PROFILE}
+  vault:
+    datasource:
+      url-key: ${OCI_VAULT_DATASOURCE_URL-KEY}
+      username-key: ${OCI_VAULT_DATASOURCE_USERNAME-KEY}
+      password-key: ${OCI_VAULT_DATASOURCE_PASSWORD-KEY}
+datasource:
+  url: ${DATASOURCE_URL}
+  username: ${DATASOURCE_USERNAME}
+  password: ${DATASOURCE_PASSWORD}

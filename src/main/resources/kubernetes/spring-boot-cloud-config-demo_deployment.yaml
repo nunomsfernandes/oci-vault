@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-cloud-config-demo
+  labels:
+    apps: spring-boot-cloud-config-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-boot-cloud-config-demo
+  template:
+    metadata:
+      labels:
+        app: spring-boot-cloud-config-demo
+    spec:
+      containers:
+        - name: spring-boot-cloud-config-demo
+          image: spring-boot-cloud-config-demo:0.0.4
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: OCI_INSTANCE_REGION-ID
+              valueFrom:
+                configMapKeyRef:
+                  key: oci.instance.region-id
+                  name: spring-boot-cloud-config-demo
+            - name: OCI_INSTANCE_TENANCY-ID
+              valueFrom:
+                configMapKeyRef:
+                  key: oci.instance.tenancy-id
+                  name: spring-boot-cloud-config-demo
+            - name: OCI_AUTHENTICATION_USER-ID
+              valueFrom:
+                secretKeyRef:
+                  key: oci.authentication.user-id
+                  name: spring-boot-cloud-config-demo
+            - name: OCI_AUTHENTICATION_FINGERPRINT
+              valueFrom:
+                secretKeyRef:
+                  key: oci.authentication.fingerprint
+                  name: spring-boot-cloud-config-demo
+            - name: OCI_AUTHENTICATION_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: oci.authentication.private-key
+                  name: spring-boot-cloud-config-demo
+            - name: OCI_AUTHENTICATION_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  key: oci.authentication.passphrase
+                  name: spring-boot-cloud-config-demo
+            - name: OCI_AUTHENTICATION_PROFILE
+              valueFrom:
+                secretKeyRef:
+                  key: oci.authentication.profile
+                  name: spring-boot-cloud-config-demo
+            - name: OCI_VAULT_DATASOURCE_URL-KEY
+              valueFrom:
+                configMapKeyRef:
+                  key: oci.vault.datasource.url-key
+                  name: spring-boot-cloud-config-demo
+            - name:  OCI_VAULT_DATASOURCE_USERNAME-KEY
+              valueFrom:
+                secretKeyRef:
+                  key: oci.vault.datasource.username-key
+                  name: spring-boot-cloud-config-demo
+            - name: OCI_VAULT_DATASOURCE_PASSWORD-KEY
+              valueFrom:
+                secretKeyRef:
+                  key: oci.vault.datasource.password-key
+                  name: spring-boot-cloud-config-demo
+            - name: DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: datasource.url
+                  name: spring-boot-cloud-config-demo
+            - name:  DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: datasource.username
+                  name: spring-boot-cloud-config-demo
+            - name: DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: datasource.password
+                  name: spring-boot-cloud-config-demo
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-boot-cloud-config-demo
+  labels:
+    app: spring-boot-cloud-config-demo
+spec:
+  type: NodePort
+  selector:
+    app: spring-boot-cloud-config-demo
+  ports:
+    - port: 8080
+      targetPort: 8080
